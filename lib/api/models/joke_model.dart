@@ -1,13 +1,5 @@
-class RandomJoke {
-  final List<String> categories;
-  final String? created_at;
-  final String? icon_url;
-  final String? id;
-  final String? updated_at;
-  final String? url;
-  final String? value;
-
-  const RandomJoke({
+class Joke {
+  const Joke({
     required this.categories,
     this.created_at,
     this.icon_url,
@@ -16,6 +8,24 @@ class RandomJoke {
     this.url,
     this.value,
   });
+  factory Joke.fromJson(Map<String, dynamic> json) {
+    return Joke(
+      categories: json['categories'] as List<String>,
+      created_at: json['created_at'] as String?,
+      icon_url: json['icon_url'] as String?,
+      id: json['id'] as String?,
+      updated_at: json['updated_at'] as String?,
+      url: json['url'] as String?,
+      value: json['value'] as String?,
+    );
+  }
+  final List<String> categories;
+  final String? created_at;
+  final String? icon_url;
+  final String? id;
+  final String? updated_at;
+  final String? url;
+  final String? value;
 }
 
 /*

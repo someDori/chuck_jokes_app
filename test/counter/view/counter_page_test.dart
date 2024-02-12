@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:chuck_norris_jokes_app/counter/counter.dart';
+import 'package:chuck_norris_jokes_app/randomJoke/randomJoke.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -13,8 +13,8 @@ class MockCounterCubit extends MockCubit<int> implements CounterCubit {}
 void main() {
   group('CounterPage', () {
     testWidgets('renders CounterView', (tester) async {
-      await tester.pumpApp(const CounterPage());
-      expect(find.byType(CounterView), findsOneWidget);
+      await tester.pumpApp(const RandomJokePage());
+      expect(find.byType(RandomJokeView), findsOneWidget);
     });
   });
 
@@ -31,7 +31,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: counterCubit,
-          child: const CounterView(),
+          child: const RandomJokeView(),
         ),
       );
       expect(find.text('$state'), findsOneWidget);
@@ -44,7 +44,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: counterCubit,
-          child: const CounterView(),
+          child: const RandomJokeView(),
         ),
       );
       await tester.tap(find.byIcon(Icons.add));
@@ -58,7 +58,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: counterCubit,
-          child: const CounterView(),
+          child: const RandomJokeView(),
         ),
       );
       await tester.tap(find.byIcon(Icons.remove));

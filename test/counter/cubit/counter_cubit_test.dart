@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:chuck_norris_jokes_app/counter/counter.dart';
+import 'package:chuck_norris_jokes_app/randomJoke/randomJoke.dart';
 
 void main() {
   group('CounterCubit', () {

@@ -1,5 +1,5 @@
+import 'package:chuck_norris_jokes_app/home/view/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:chuck_norris_jokes_app/counter/counter.dart';
 import 'package:chuck_norris_jokes_app/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+      home: const HomePage(),
     );
   }
 }
