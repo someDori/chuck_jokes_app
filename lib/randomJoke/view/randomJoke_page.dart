@@ -32,12 +32,17 @@ class _RandomJokeViewState extends State<RandomJokeView> {
       body: Column(
         children: [
           const Spacer(),
-          Text(
-            BlocProvider.of<RandomJokeCubit>(context).state,
-            style: const TextStyle(
-              fontSize: 32,
-            ),
-            textAlign: TextAlign.center,
+          BlocBuilder<RandomJokeCubit, String>(
+            builder: (context, state) {
+              print('From blocbuilder: ${state}');
+              return Text(
+                state,
+                style: const TextStyle(
+                  fontSize: 32,
+                ),
+                textAlign: TextAlign.center,
+              );
+            },
           ),
           const Spacer(),
           Row(
@@ -46,11 +51,7 @@ class _RandomJokeViewState extends State<RandomJokeView> {
               ElevatedButton(
                 onPressed: () async {
                   final joke = await ApiService().randomJoke();
-                  final categoryJoke = await ApiService().categoryJoke('dev');
-                  setState(() {
-                    BlocProvider.of<RandomJokeCubit>(context).newJoke(joke);
-                  });
-                  print('joke: $joke');
+                  BlocProvider.of<RandomJokeCubit>(context).newJoke(joke);
                 },
                 child: const Text('Joke'),
               ),
