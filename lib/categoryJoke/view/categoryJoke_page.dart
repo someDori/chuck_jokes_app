@@ -36,14 +36,32 @@ class _CategoryJokeViewState extends State<CategoryJokeView> {
       body: Column(
         children: [
           const Spacer(),
-          BlocBuilder<CategoryJokeCubit, String>(
-            builder: (context, state) {
-              return Text(
-                state,
-                style: const TextStyle(
-                  fontSize: 32,
+          BlocConsumer<CategoryJokeCubit, String>(
+            listener: (context, state) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('New joke created'),
+                  duration: const Duration(seconds: 3),
+                  behavior: SnackBarBehavior.fixed,
+                  action: SnackBarAction(
+                    label: 'OK',
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                    },
+                  ),
                 ),
-                textAlign: TextAlign.center,
+              );
+            },
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  state,
+                  style: const TextStyle(
+                    fontSize: 32,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               );
             },
           ),
@@ -51,14 +69,17 @@ class _CategoryJokeViewState extends State<CategoryJokeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  final categoryJoke =
-                      await ApiService().categoryJoke(widget.category);
-                  BlocProvider.of<CategoryJokeCubit>(context)
-                      .newJoke(categoryJoke);
-                },
-                child: const Text('Joke'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final categoryJoke =
+                        await ApiService().categoryJoke(widget.category);
+                    BlocProvider.of<CategoryJokeCubit>(context)
+                        .newJoke(categoryJoke);
+                  },
+                  child: const Text('Joke'),
+                ),
               ),
             ],
           ),

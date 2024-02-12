@@ -32,15 +32,32 @@ class _RandomJokeViewState extends State<RandomJokeView> {
       body: Column(
         children: [
           const Spacer(),
-          BlocBuilder<RandomJokeCubit, String>(
-            builder: (context, state) {
-              print('From blocbuilder: ${state}');
-              return Text(
-                state,
-                style: const TextStyle(
-                  fontSize: 32,
+          BlocConsumer<RandomJokeCubit, String>(
+            listener: (context, state) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('New joke created'),
+                  duration: const Duration(seconds: 3),
+                  behavior: SnackBarBehavior.fixed,
+                  action: SnackBarAction(
+                    label: 'OK',
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).clearSnackBars();
+                    },
+                  ),
                 ),
-                textAlign: TextAlign.center,
+              );
+            },
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  state,
+                  style: const TextStyle(
+                    fontSize: 32,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               );
             },
           ),
@@ -48,12 +65,15 @@ class _RandomJokeViewState extends State<RandomJokeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  final joke = await ApiService().randomJoke();
-                  BlocProvider.of<RandomJokeCubit>(context).newJoke(joke);
-                },
-                child: const Text('Joke'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final joke = await ApiService().randomJoke();
+                    BlocProvider.of<RandomJokeCubit>(context).newJoke(joke);
+                  },
+                  child: const Text('Joke'),
+                ),
               ),
             ],
           ),
