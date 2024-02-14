@@ -1,8 +1,6 @@
 import 'package:chuck_norris_jokes_app/api/services/joke_services.dart';
-import 'package:chuck_norris_jokes_app/categoryJoke/cubit/categoryJoke_cubit.dart';
 import 'package:chuck_norris_jokes_app/categoryJoke/view/categoryJoke_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesView extends StatefulWidget {
   const CategoriesView({super.key});

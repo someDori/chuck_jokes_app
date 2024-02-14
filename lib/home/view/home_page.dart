@@ -77,13 +77,13 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const FavouritesView(),
+                  builder: (_) => const FavouritesPage(),
                 ),
               );
             },
             icon: const Icon(
-              Icons.star,
-              color: Color.fromARGB(255, 241, 218, 5),
+              Icons.favorite,
+              color: Colors.red,
             ),
           ),
         ],

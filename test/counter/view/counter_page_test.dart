@@ -1,10 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:chuck_norris_jokes_app/randomJoke/randomJoke.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
-import 'package:chuck_norris_jokes_app/randomJoke/randomJoke.dart';
 
 import '../../helpers/helpers.dart';
 

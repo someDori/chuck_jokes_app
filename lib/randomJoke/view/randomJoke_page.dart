@@ -1,4 +1,5 @@
 import 'package:chuck_norris_jokes_app/api/services/joke_services.dart';
+import 'package:chuck_norris_jokes_app/favourites/cubit/favourites_cubit.dart';
 import 'package:chuck_norris_jokes_app/randomJoke/randomJoke.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,8 +10,15 @@ class RandomJokePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RandomJokeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<RandomJokeCubit>(
+          create: (BuildContext context) => RandomJokeCubit(),
+        ),
+        BlocProvider<FavouritesCubit>(
+          create: (BuildContext context) => FavouritesCubit(),
+        ),
+      ],
       child: const RandomJokeView(),
     );
   }
@@ -24,25 +32,31 @@ class RandomJokeView extends StatefulWidget {
 }
 
 class _RandomJokeViewState extends State<RandomJokeView> {
-  Future<void> _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    print(prefs.getString('joke'));
-  }
-
   bool loveClicked = false;
 
   @override
   Widget build(BuildContext context) {
+    final randomJokeCubit = BlocProvider.of<RandomJokeCubit>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('random joke'),
         actions: [
-          if (BlocProvider.of<RandomJokeCubit>(context).state != '')
+          if (randomJokeCubit.state != '')
             IconButton(
-              onPressed: () {
-                setState(() {
-                  loveClicked = !loveClicked;
-                });
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final favs = prefs.getStringList('favJokes');
+                if (loveClicked) {
+                  await prefs.remove('favJokes');
+                } else {
+                  await prefs.setStringList(
+                    'favJokes',
+                    [...?favs, randomJokeCubit.state],
+                  );
+                }
+                loveClicked = !loveClicked;
+                setState(() {});
               },
               icon: loveClicked
                   ? const Icon(
@@ -61,24 +75,10 @@ class _RandomJokeViewState extends State<RandomJokeView> {
               setState(() {
                 loveClicked = false;
               });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('New joke created'),
-                  duration: const Duration(seconds: 3),
-                  behavior: SnackBarBehavior.fixed,
-                  action: SnackBarAction(
-                    label: 'OK',
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                    },
-                  ),
-                ),
-              );
             },
-            //Press button to generate a joke
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Text(
                   state == '' ? 'Press button to generate a joke' : state,
                   style: const TextStyle(
@@ -94,13 +94,9 @@ class _RandomJokeViewState extends State<RandomJokeView> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    final joke = await ApiService().randomJoke();
-                    BlocProvider.of<RandomJokeCubit>(context).newJoke(joke);
-                    await _loadPreferences();
-                  },
+                  onPressed: randomJokeCubit.newJoke,
                   child: const Text('Joke'),
                 ),
               ),

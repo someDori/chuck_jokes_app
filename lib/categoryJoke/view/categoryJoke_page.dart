@@ -54,7 +54,7 @@ class _CategoryJokeViewState extends State<CategoryJokeView> {
             },
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Text(
                   state,
                   style: const TextStyle(
@@ -70,7 +70,7 @@ class _CategoryJokeViewState extends State<CategoryJokeView> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: ElevatedButton(
                   onPressed: () async {
                     final categoryJoke =

@@ -1,8 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:chuck_norris_jokes_app/api/models/joke_model.dart';
+import 'package:chuck_norris_jokes_app/api/services/joke_services.dart';
 
 class RandomJokeCubit extends Cubit<String> {
   RandomJokeCubit() : super('');
 
-  void newJoke(String joke) => emit(joke);
+  Future<void> newJoke() async {
+    final joke = await ApiService().randomJoke();
+    emit(joke);
+  }
 }
